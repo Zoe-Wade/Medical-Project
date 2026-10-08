@@ -8,9 +8,15 @@ import java.util.Date;
 
 class PatientList {
     public class Iterator {
+// JS: Watch the spelling: it is "iteration." The computer doesn't care, but people reading your code will.
+// Note, with class members it is generally better to initialize them in the constructor, so we can see
+// all the initializations in one place.  
         int iteratonIndex = 0;
 
         public Iterator() {
+// JS This is the main part of the merge algorithm, but it does not belond here at all. 
+// In fact it would not compile, as "merged" is not defined.  
+// All the iterator's constructor should do is initialize the iteration index. 
             Iterator iter1 = list1.new Iterator();
             Iterator iter2 = list2.new Iterator();
             while (iter1.peek() != null && iter2.peek() != null) {
@@ -39,15 +45,22 @@ class PatientList {
             }
         }
 
+// JS: A merge sort routine would not be in the Iterator class, although you might well use an iterator to do it.  
         List mergesort(Iterator list) {
             return null;
         }
     }
 
+// JS: This looks like stray code.  It does not make sense for a class to contain two more members of itself.
     PatientList list1, list2;
+// JS: There's no reason to have these here. Iterators, in any case, seldom make sense as class members.
+// They are created for particular purposes and used.  We don't keep them around.   
     PatientList.Iterator iter1 = list1.new Iterator();
     PatientList.Iterator iter2 = list2.new Iterator();
+ // JS: what is this?
     Patient patient;
+
+// JS: I know what this is, but it is good to comment important class members so we know what they are. 
     private Patient[] patients = null;
     private final int MAX_PATIENTS = 1000;
 
@@ -55,12 +68,17 @@ class PatientList {
         patients = new Patient[MAX_PATIENTS];
     }
 
+// JS: This should not be in a public method.  Once we switch to trees, there will not be any maximum.
+// The fact that there is one right now is just because we are using an array.  Don't build that assumption
+// into your public facing methods, in any way.  
     public int getMAX_PATIENTS() {
         return MAX_PATIENTS;
     }
 
+// JS: Very good description. It is good to have this sort of description on each public method.  
     // Adds a patient to the database. Returns true if this succeeds, false otherwise.
     public boolean add(Patient pat) {
+// JS: Very good -- delegating the work to this other method.  Correct strategy. 
         return addOrdered(pat);
     }
 
@@ -83,8 +101,14 @@ class PatientList {
     }
 
     private Patient binarySearch(PatientIdentity id) {
+
+// JS: Better to use the actual patients.length
         int upper = MAX_PATIENTS;
         int lower = 0;
+
+// JS: This next line has to be inside the while loop.  That is how the search function, recomputing mid each time. 
+// Either this was not tested, or it was tested on a collection of 1 or 2 patients and happened to work. 
+// It would fail (in fact, loop endlessly) on any larger set.  
         int mid = (upper + lower) / 2;
         while (upper >= lower) {
             if (patients[mid].getIdentity().match(id)) {
@@ -99,6 +123,7 @@ class PatientList {
         return null;
     }
 
+// JS: this is a nice method, a good example of 'eat our own dog food'
     Patient linearSearch(PatientIdentity id) {
         Patient pat = null;
         PatientList.Iterator iter = this.new Iterator();
@@ -111,7 +136,14 @@ class PatientList {
         return null;
     }
 
+// JS: this method is very confused about what it is doing.
+// It clearly means to be making one Patient, but then it sets up a Scanner to read 
+// multiple lines of a file, which would mean creation of multiple patients.
+// the argument "line" would make sense if that were read from a file elsehwhere,
+// but newPatient makes no sense.  
     static Patient makePatient(String line, Patient newPatient) {
+
+// JS: Hmm? the line is the name of the file?
         File inputFile = new File(line);
         System.out.println(line);
 
@@ -123,20 +155,28 @@ class PatientList {
             return null;
         }
 
+// JS: Please remove this next line. I put it there when we were working in office time. 
         // This is a comment. It can be removed.
         while (scanner.hasNextLine()) {
             String nextLine = scanner.nextLine();
             String[] CSV = nextLine.split(",");
 
+// JS: can't assume these two references work. What if the line is empty or contains just one token?
             String lastName = CSV[0];
             String firstName = CSV[1];
+
+// JS: This should be done with a SimpleDateFormat set to match the format in the file. 
+// Note, you will need a try/catch to catch ParseException
             Date dateOfBirth = Date.parse(CSV[2]);
             Name name = new Name(CSV[1], CSV[0]);
 
             PatientIdentity identity = new PatientIdentity(name, dateOfBirth);
             newPatient = new Patient(identity);
+
+// JS: If we are returning here then a while loop would not make sense 
             return newPatient;
         }
+// JS: ????
         return newPatient;
     }
 

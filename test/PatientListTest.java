@@ -15,12 +15,16 @@ class PatientListTest {
     @Test
     void add() {
         Patient pat = null;
-        assertTrue(add(pat));
+        assertTrue(addOrdered(pat));
     }
 
     @Test
     void find() {
-        assertTrue();
+        assertTrue(binarySearch(pId));
+    }
+
+    @Test
+    void addOrdered() {
     }
 
     @Test

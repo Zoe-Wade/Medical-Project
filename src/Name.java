@@ -3,8 +3,7 @@ public class Name {
     private String lastName;
 
     public Name(String first, String last) {
-        firstName = first;
-        lastName = last;
+
     }
 
     private String getFirstName() {

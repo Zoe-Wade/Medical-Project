@@ -1,10 +1,8 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
 import java.util.Date;
+import java.util.Scanner;
 
 class PatientList {
     public class Iterator {
@@ -15,9 +13,9 @@ class PatientList {
             Iterator iter2 = list2.new Iterator();
             while (iter1.peek() != null && iter2.peek() != null) {
                 if (iter1.peek().getIdentity().isLessThan(iter2.peek().getIdentity())) {
-                    merged.append(iter1.next().csvString());
+                    this.append(iter1.next());
                 } else {
-                    merged.append(iter2.next().csvString());
+                    this.append(iter2.next());
                 }
             }
         }
@@ -31,6 +29,8 @@ class PatientList {
         }
 
         public Patient next() {
+            PatientList patientList;
+            Iterator iter;
             if (iteratonIndex < patients.length || patients[iteratonIndex] == null) {
                 return null;
             } else {
@@ -39,14 +39,41 @@ class PatientList {
             }
         }
 
-        List mergesort(Iterator list) {
-            return null;
+        protected Patient append(Patient patient) {
+            if (iteratonIndex < patients.length) {
+                iteratonIndex++;
+                add(patient);
+            }
+            return patient;
+        }
+
+        List mergesort(Patient[] finalList) {
+            int index1 = 0;
+            int index2 = 0;
+            int[] list1 = null;
+            int[] list2 = null;
+            while (index1 < list1.length && index2 < list2.length) {
+                if (list1[index1] < 2 && list2[index2] < 2) {
+
+                }
+                if (list1[index1] < list2[index2]) {
+                    add(finalList[list1[index1]]);
+                    index1++;
+                }
+                else {
+                    if (list2[index2] < list1[index1]) {
+                        add(finalList[list2[index2]]);
+                        index2++;
+                    }
+                }
+            }
+            return mergesort(finalList);
         }
     }
 
     PatientList list1, list2;
-    PatientList.Iterator iter1 = list1.new Iterator();
-    PatientList.Iterator iter2 = list2.new Iterator();
+    Iterator iter1 = list1.new Iterator();
+    Iterator iter2 = list2.new Iterator();
     Patient patient;
     private Patient[] patients = null;
     private final int MAX_PATIENTS = 1000;
@@ -71,7 +98,7 @@ class PatientList {
 
     private boolean addOrdered(Patient pat) {
         int currentIndex = MAX_PATIENTS;
-        while (currentIndex >= 0 && patients[currentIndex] < patients[currentIndex - 1]) {
+        while (currentIndex >= 0 && patients[currentIndex].getIdentity().isLessThan(pat.getIdentity())) {
             //move patient at current_index to current_index +1
             // at this point, element currentIndex is empty
             currentIndex--;
@@ -101,7 +128,7 @@ class PatientList {
 
     Patient linearSearch(PatientIdentity id) {
         Patient pat = null;
-        PatientList.Iterator iter = this.new Iterator();
+        Iterator iter = this.new Iterator();
         while ((pat = iter.next()) != null) {
 //            if this patient matches the identity, this is the one you want
             if (this.patient.equals(id)) {
@@ -110,34 +137,4 @@ class PatientList {
         }
         return null;
     }
-
-    static Patient makePatient(String line, Patient newPatient) {
-        File inputFile = new File(line);
-        System.out.println(line);
-
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(inputFile);
-        } catch (FileNotFoundException e) {
-            System.out.print("File could not be opened.");
-            return null;
-        }
-
-        // This is a comment. It can be removed.
-        while (scanner.hasNextLine()) {
-            String nextLine = scanner.nextLine();
-            String[] CSV = nextLine.split(",");
-
-            String lastName = CSV[0];
-            String firstName = CSV[1];
-            Date dateOfBirth = Date.parse(CSV[2]);
-            Name name = new Name(CSV[1], CSV[0]);
-
-            PatientIdentity identity = new PatientIdentity(name, dateOfBirth);
-            newPatient = new Patient(identity);
-            return newPatient;
-        }
-        return newPatient;
-    }
-
 }

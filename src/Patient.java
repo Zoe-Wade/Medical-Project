@@ -1,11 +1,16 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
 
 public class Patient {
+    private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd-MM-yyyy");
+
     private PatientIdentity identity = null;
     public PrescriptionList prescriptionList = null;
 
@@ -26,26 +31,26 @@ public class Patient {
         return "identity: " + identity.toString();
     }
 
-    public Patient toCSV(Patient newPatient) {
-        String line = "patients.txt";
-        File inputFile = new File(line);
-        System.out.println(line);
+    public String toCSV() {
+        return identity.getName().getLastName()
+                + "," + identity.getName().getFirstName()
+                + "," + DATE_TIME_FORMATTER.format(identity.getDateOfBirth());
+    }
 
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(inputFile);
-            PatientList.Iterator iter = null;
-        } catch (FileNotFoundException e) {
-            System.out.print("File could not be opened.");
+    public static Patient fromCSV(String CSV) {
+        String[] tokens = CSV.split(",");
+        if (tokens.length != 3) {
             return null;
         }
 
-        while (scanner.hasNextLine()) {
-            newPatient = new Patient(identity.toCSV());
+        try {
+            Date parsedDate = DATE_TIME_FORMATTER.parse(tokens[2]);
+            Name name = new Name(tokens[1], tokens[0]);
+            PatientIdentity identity = new PatientIdentity(name, parsedDate);
+            return new Patient(identity, new PrescriptionList());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
         }
-        return newPatient;
-
-        Patient output = new Patient(identity.toCSV(getIdentity()), prescriptionList);
-        return output;
     }
 }

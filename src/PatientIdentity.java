@@ -38,33 +38,4 @@ public class PatientIdentity {
     public String toString() {
         return "name: " + name.toString() + " dob: " + dateOfBirth.toString();
     }
-
-    public PatientIdentity toCSV(PatientIdentity newIdentity) {
-        String line = "patients.txt";
-        File inputFile = new File(line);
-        System.out.println(line);
-
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(inputFile);
-        } catch (FileNotFoundException e) {
-            System.out.print("File could not be opened.");
-            return null;
-        }
-
-        while (scanner.hasNextLine()) {
-            String nextLine = scanner.nextLine();
-            String[] CSV = nextLine.split(",");
-
-            String lastName = CSV[0];
-            String firstName = CSV[1];
-            Date dateOfBirth = Date.parse(CSV[2]);
-            Name name = new Name(CSV[1], CSV[0]);
-
-            PatientIdentity identity = new PatientIdentity(name, dateOfBirth);
-            identity = newIdentity;
-            return newIdentity;
-        }
-        return newIdentity;
-    }
 }

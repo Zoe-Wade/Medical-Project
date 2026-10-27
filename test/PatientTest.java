@@ -13,7 +13,7 @@ class PatientTest {
         Name name = new Name(first, last);
         Date dob = new Date();
         PatientIdentity id = new PatientIdentity(name, dob);
-        Patient pat = new Patient(id);
+        Patient pat = new Patient(id, new PrescriptionList());
         assertTrue(pat.getIdentity().match(id));
     }
 

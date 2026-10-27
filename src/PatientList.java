@@ -1,6 +1,5 @@
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -109,7 +108,7 @@ class PatientList {
         return false;
     }
 
-    private Patient binarySearch(PatientIdentity id) {
+    public Patient binarySearch(PatientIdentity id) {
         int upper = MAX_PATIENTS;
         int lower = 0;
         int mid = (upper + lower) / 2;
@@ -136,5 +135,40 @@ class PatientList {
             }
         }
         return null;
+    }
+
+    public boolean saveToFile(String filename) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(filename);
+            Iterator iter = this.new Iterator();
+            while (iter.next() != null) {
+                writer.write(iter.next().toCSV() + "\n");
+            }
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean importFromFile( String filename) {
+        Scanner scanner = null;
+        File file = new File(filename);
+        try {
+            scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                Patient p = Patient.fromCSV(scanner.nextLine());
+                if (p != null) {
+                    add(p);
+                }
+            }
+            scanner.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

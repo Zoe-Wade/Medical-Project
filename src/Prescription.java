@@ -46,4 +46,8 @@ public class Prescription {
         Prescription output = new Prescription(medicineName, dateOfIssue,dosage, prescriber);
         return output;
     }
+
+    class PrescriptionReader extends Prescription {
+
+    }
 }

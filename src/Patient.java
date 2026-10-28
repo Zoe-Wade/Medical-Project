@@ -21,6 +21,7 @@ public class Patient {
 
     public Patient(Patient otherPatient) {
         this.identity = otherPatient.identity;
+        this.prescriptionList = otherPatient.prescriptionList;
     }
 
     public PatientIdentity getIdentity() {
@@ -28,7 +29,7 @@ public class Patient {
     }
 
     public String toString() {
-        return "identity: " + identity.toString();
+        return "identity: " + identity.toString() + "prescription(s): " + prescriptionList.toString();
     }
 
     public String toCSV() {

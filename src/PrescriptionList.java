@@ -56,7 +56,6 @@ public class PrescriptionList {
     private ListRecord head;
     private ListRecord next;
     private ListRecord tail;
-    final int MAX_PRESCRIPTIONS = 20;
 
     public PrescriptionList() {
         head = null;
@@ -74,6 +73,27 @@ public class PrescriptionList {
             pBefore = pBefore.next;
             pBefore.next = newRecord;
         }
+    }
+
+    public void delete(Prescription prescription) {
+        ListRecord temp = head;
+        ListRecord prev = null;
+
+        if (temp == null) {
+            return;
+        }
+
+        if (temp != null && temp.data == prescription) {
+            head = temp.next;
+            return;
+        }
+
+        while (temp != null && temp.data != prescription) {
+            prev = temp;
+            temp = temp.next;
+        }
+
+        prev.next = temp.next;
     }
 
     private class ListRecord {
@@ -107,7 +127,4 @@ public class PrescriptionList {
         return null;
     }
 
-    public void delete(Prescription prescription) {
-
-    }
 }

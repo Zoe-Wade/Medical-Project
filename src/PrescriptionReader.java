@@ -2,8 +2,8 @@ import java.util.Date;
 
 public class PrescriptionReader extends Prescription {
 
-    public PrescriptionReader(String medName, Date issuedDate, int dosage, String prescriberName) {
-        super(medName, issuedDate, dosage, prescriberName);
+    public PrescriptionReader(Name patName, String medName, Date issuedDate, int dosage, String prescriberName) {
+        super(patName, medName, issuedDate, dosage, prescriberName);
     }
 
 

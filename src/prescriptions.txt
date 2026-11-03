@@ -1,5 +1,5 @@
-Jane Doe,01-01-1990,medicine_name,date_of_issue,dosage,prescriber
-John Doe,08-12-1985,medicine_name,date_of_issue,dosage,prescriber
-Michael Smith,09-09-1976,medicine_name,date_of_issue,dosage,prescriber
-Santa Claus,12-25-1950,medicine_name,date_of_issue,dosage,prescriber
-Violet Blue,11-03-2000,medicine_name,date_of_issue,dosage,prescriber
+Jane Doe,01-01-1990,medicine_name,09-12-2012,dosage,prescriber
+John Doe,08-12-1985,medicine_name,07-21-2015,dosage,prescriber
+Michael Smith,09-09-1976,medicine_name,10-10-2020,dosage,prescriber
+Santa Claus,12-25-1950,medicine_name,03-02-2019,dosage,prescriber
+Violet Blue,11-03-2000,medicine_name,11-13-2022,dosage,prescriber

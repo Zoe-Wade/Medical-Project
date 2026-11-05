@@ -1,6 +1,8 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+// JS: Please remove this.  IntelliJ tries to guess what you want. Don't let it. 
 import java.util.List;
 
 public class Prescription {
@@ -40,6 +42,7 @@ public class Prescription {
         return dateOfIssue;
     }
 
+// JS: Please get rid of stuff like this.  You are correct that it does not belong here. 
 //    private ListRecord linkedList() {
 //        int count = 0;
 //        ListRecord pRecord = head;
@@ -60,6 +63,7 @@ public class Prescription {
         return output;
     }
 
+// JS: These functions are fine.  You would find String,format() useful in these situations. 
     public String toString() {
         return "Patient Name: " + patientName.toString()
                 + "Medicine Name: " + medicineName.toString()
@@ -83,10 +87,14 @@ public class Prescription {
             return null;
         }
 
+// JS: I do not understand this part.  You have already split the CSV into tokens.
+// The name occupies the first token.  So you could do tokens[0].split(" "), but not CSV. 
         String[] nameTokens = CSV.split(" ");
         if (nameTokens.length != 1) {
             return null;
         }
+
+// JS: good use of date time formatter, and also good handling of the parse exception.  
         try {
             Date parsedBirthdate = Prescription.DATE_TIME_FORMATTER.parse(tokens[1]);
             Name name = new Name(nameTokens[0], nameTokens[1]);

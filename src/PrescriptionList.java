@@ -3,9 +3,12 @@ import java.awt.*;
 public class PrescriptionList {
 
     public class Iterator {
+// JS: No concept of an "index" in a linked list
         int iteratonIndex = 0;
 
         public Iterator() {
+// JS: I have no idea what this code is doing here.  It would not compile.
+// This is code to do merges, but that is not called for in a constructor. 
             PrescriptionList.Iterator iter1 = list1.new Iterator();
             PrescriptionList.Iterator iter2 = list2.new Iterator();
             while (iter1.peek() != null && iter2.peek() != null) {
@@ -18,6 +21,7 @@ public class PrescriptionList {
         }
 
         public Prescription peek() {
+// JS: This is code for an array, but you don't have an array....
             if (iteratonIndex < prescriptions.length) {
                 return prescriptions[iteratonIndex];
             } else {
@@ -49,10 +53,15 @@ public class PrescriptionList {
         }
     }
 
+// JS: the list class wouold not hve instances of itself as data
     PrescriptionList list1, list2;
     PrescriptionList.Iterator iter1 = list1.new Iterator();
     PrescriptionList.Iterator iter2 = list2.new Iterator();
+
+// JS: Should not be here.  
     private Prescription[] prescriptions = null;
+
+// JS: Actually all we need is the head
     private ListRecord head;
     private ListRecord next;
     private ListRecord tail;
@@ -63,9 +72,12 @@ public class PrescriptionList {
         tail = null;
     }
 
+
     public void add( Prescription pr ) {
         ListRecord pBefore = head;
         ListRecord newRecord = next;
+// JS: thnis is what we do once we have found where to add the record. 
+// There are two cases: adding right at the head, or adding somewhere else.  
         newRecord.next = pBefore.next;
         pBefore.next = newRecord;
         while (pBefore.data.comesBefore(pBefore.data, newRecord.data)) {
@@ -79,20 +91,28 @@ public class PrescriptionList {
         ListRecord temp = head;
         ListRecord prev = null;
 
+// JS: in these next two if statements it would be clearer if you
+// used head itself, not temp
         if (temp == null) {
             return;
         }
 
         if (temp != null && temp.data == prescription) {
             head = temp.next;
+// JS: you also want to set temp.next = null right here, so temp is removed
+// The Java garbage collector will then recycle it.  
             return;
         }
 
+// JS: temp is not really needed here, as you can reference wverything you need to
+// using hte prev variable.
         while (temp != null && temp.data != prescription) {
             prev = temp;
             temp = temp.next;
         }
 
+// Here we do need a temp, to briefly hold on to the thing being deleted
+// so we can set its next pointer to null.  
         prev.next = temp.next;
     }
 
@@ -105,6 +125,8 @@ public class PrescriptionList {
         }
     }
 
+// JS: this method and the next belong in the iterator class,
+// which you did define above
     public void init() {
         //Resets iteration to the beginning of the list and prepares to iterate.
         ListRecord current = head;

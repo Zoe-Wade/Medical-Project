@@ -1,13 +1,12 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class Prescription {
     public Name patientName;
     public String medicineName;
     public Date dateOfIssue;
-    public int dosage = 0;
+    public int dosage;
     public String prescriber;
     private ListRecord head;
     private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd-MM-yyyy");
@@ -39,16 +38,6 @@ public class Prescription {
     public Date getDateOfIssue() {
         return dateOfIssue;
     }
-
-//    private ListRecord linkedList() {
-//        int count = 0;
-//        ListRecord pRecord = head;
-//        while (pRecord != null) {
-//            count++;
-//            pRecord = pRecord.next;
-//        }
-//        return pRecord;
-//    }
 
     public boolean comesBefore(Prescription pr1, Prescription pr2 ) {
         // Returns true if pr1 should come before pr2 in our list, false otherwise.
@@ -83,7 +72,7 @@ public class Prescription {
             return null;
         }
 
-        String[] nameTokens = CSV.split(" ");
+        String[] nameTokens = tokens[0].split(" ");
         if (nameTokens.length != 1) {
             return null;
         }

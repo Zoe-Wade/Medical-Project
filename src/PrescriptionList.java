@@ -3,18 +3,9 @@ import java.awt.*;
 public class PrescriptionList {
 
     public class Iterator {
-        int iteratonIndex = 0;
 
         public Iterator() {
-            PrescriptionList.Iterator iter1 = list1.new Iterator();
-            PrescriptionList.Iterator iter2 = list2.new Iterator();
-            while (iter1.peek() != null && iter2.peek() != null) {
-                if (iter1.peek().getDateOfIssue().before(iter2.peek().getDateOfIssue())) {
-                    this.append(iter1.next());
-                } else {
-                    this.append(iter2.next());
-                }
-            }
+
         }
 
         public Prescription peek() {
@@ -28,11 +19,11 @@ public class PrescriptionList {
         public Prescription next() {
             PrescriptionList prescriptionList;
             PatientList.Iterator iter;
-            if (iteratonIndex < prescriptions.length || prescriptions[iteratonIndex] == null) {
-                return null;
+            if (iteratonIndex >= prescriptions.length || prescriptions[iteratonIndex] == null) {
+                head = next;
+                return head.data;
             } else {
-                Prescription prescription = prescriptions[iteratonIndex];
-                return prescription;
+                return prescriptions[iteratonIndex++];
             }
         }
 
@@ -45,6 +36,13 @@ public class PrescriptionList {
         }
 
         List mergesort(PatientList.Iterator list) {
+            while (iter1.peek() != null && iter2.peek() != null) {
+                if (iter1.peek().getDateOfIssue().before(iter2.peek().getDateOfIssue())) {
+                    this.append(iter1.next());
+                } else {
+                    this.append(iter2.next());
+                }
+            }
             return null;
         }
     }

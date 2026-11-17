@@ -5,12 +5,9 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PatientListTest {
-    Patient patient;
-    Patient[] patients;
-    final int MAX_PATIENTS = 1000;
 
     @Test
-    void getMAX_PATIENTS() {
+    void getNumPatients() {
     }
 
     @Test
@@ -22,50 +19,28 @@ class PatientListTest {
 
     @Test
     void find() {
-        String first = new String();
-        String last = new String();
+        String first = "John";
+        String last = "Doe";
         Name name = new Name(first, last);
         Date dob = new Date();
         PatientIdentity pId = new PatientIdentity(name, dob);
-        PrescriptionList prescriptionList = null;
         PatientList list = new PatientList();
-        Patient pat = new Patient(pId, prescriptionList);
-        list.binarySearch(pId);
-        assertTrue(list.find(pId));
-    }
-
-    @Test
-    void addOrdered() {
-    }
-
-    @Test
-    void binarySearch() {
-        String first = new String();
-        String last = new String();
-        Name name = new Name(first, last);
-        Date dob = new Date();
-        PatientIdentity pId = new PatientIdentity(name, dob);
-        PrescriptionList prescriptionList = null;
-        PatientList list = new PatientList();
-        Patient[] patients;
-        int upper = MAX_PATIENTS;
-        int lower = 0;
-        int mid = (upper + lower) / 2;
-//        assertTrue(list.binarySearch(pId));
+        Patient pat = new Patient(pId, null);
+        list.add(pat);
+        assertTrue(list.find(pId).getIdentity().match(pId));
     }
 
     @Test
     void linearSearch() {
-        String first = new String();
-        String last = new String();
+        String first = "John";
+        String last = "Doe";
         Name name = new Name(first, last);
         Date dob = new Date();
         PatientIdentity pId = new PatientIdentity(name, dob);
-        PrescriptionList prescriptionList = null;
-        PatientList list = null;
-        Patient pat = null;
-        PatientList.Iterator iter;
-//        assertTrue(list.linearSearch(pId));
+        PatientList list = new PatientList();
+        Patient pat = new Patient(pId, null);
+        list.add(pat);
+        assertTrue(list.linearSearch(pId).getIdentity().match(pId));
     }
 
     @Test

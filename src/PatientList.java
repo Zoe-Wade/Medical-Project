@@ -1,22 +1,12 @@
-import java.awt.*;
+import javax.swing.tree.TreeNode;
 import java.io.*;
-import java.util.Date;
 import java.util.Scanner;
 
 class PatientList {
     public class Iterator {
         int iteratonIndex = 0;
-
-        public Iterator() {
-            Iterator iter1 = list1.new Iterator();
-            Iterator iter2 = list2.new Iterator();
-            while (iter1.peek() != null && iter2.peek() != null) {
-                if (iter1.peek().getIdentity().isLessThan(iter2.peek().getIdentity())) {
-                    this.append(iter1.next());
-                } else {
-                    this.append(iter2.next());
-                }
-            }
+        public Iterator(int iteratorIndex) {
+            iteratorIndex = iteratonIndex;
         }
 
         public Patient peek() {
@@ -28,17 +18,16 @@ class PatientList {
         }
 
         public Patient next() {
-            PatientList patientList;
-            Iterator iter;
-            if (iteratonIndex < patients.length || patients[iteratonIndex] == null) {
+            if (iteratonIndex >= patients.length || patients[iteratonIndex] == null) {
                 return null;
             } else {
-                Patient pat = patients[iteratonIndex];
-                return pat;
+                Patient p = patients[iteratonIndex];
+                iteratonIndex++;
+                return p;
             }
         }
 
-        protected Patient append(Patient patient) {
+        public Patient append(Patient patient) {
             if (iteratonIndex < patients.length) {
                 iteratonIndex++;
                 add(patient);
@@ -46,43 +35,60 @@ class PatientList {
             return patient;
         }
 
-        List mergesort(Patient[] finalList) {
-            int index1 = 0;
-            int index2 = 0;
-            int[] list1 = null;
-            int[] list2 = null;
-            while (index1 < list1.length && index2 < list2.length) {
-                if (list1[index1] < 2 && list2[index2] < 2) {
-
-                }
-                if (list1[index1] < list2[index2]) {
-                    add(finalList[list1[index1]]);
-                    index1++;
-                }
-                else {
-                    if (list2[index2] < list1[index1]) {
-                        add(finalList[list2[index2]]);
-                        index2++;
-                    }
-                }
-            }
-            return mergesort(finalList);
-        }
+//        public List merge(Patient[] list1, Patient[] list2) {
+//            Iterator iter1 = list1.new Iterator();
+//            Iterator iter2 = list2.new Iterator();
+//            while (iter1.peek() != null && iter2.peek() != null) {
+//                if (iter1.peek().getIdentity().isLessThan(iter2.peek().getIdentity())) {
+//                    this.append(iter1.next());
+//                } else {
+//                    this.append(iter2.next());
+//                }
+//            }
+//
+//            int index1 = 0;
+//            int index2 = 0;
+//            int[] list1 = null;
+//            int[] list2 = null;
+//            while (index1 < list1.length && index2 < list2.length) {
+//                if (list1[index1] < 2 && list2[index2] < 2) {
+//
+//                }
+//                if (list1[index1] < list2[index2]) {
+//                    add(finalList[list1[index1]]);
+//                    index1++;
+//                }
+//                else {
+//                    if (list2[index2] < list1[index1]) {
+//                        add(finalList[list2[index2]]);
+//                        index2++;
+//                    }
+//                }
+//            }
+//            return mergesort(finalList);
+//        }
     }
 
-    PatientList list1, list2;
-    Iterator iter1 = list1.new Iterator();
-    Iterator iter2 = list2.new Iterator();
-    Patient patient;
+//    public List merge(Patient[] list1, Patient[] list2) {
+//        return merge();
+//    }
+
+//    PatientList list1, list2;
+//    Iterator iter1 = list1.new Iterator();
+//    Iterator iter2 = list2.new Iterator();
+    // patients array
     private Patient[] patients = null;
+    private int logicalSize = 0;
+    // maximum patient capacity for hospital
     private final int MAX_PATIENTS = 1000;
+
 
     public PatientList() {
         patients = new Patient[MAX_PATIENTS];
     }
 
-    public int getMAX_PATIENTS() {
-        return MAX_PATIENTS;
+    public int getNumPatients() {
+        return logicalSize;
     }
 
     // Adds a patient to the database. Returns true if this succeeds, false otherwise.
@@ -96,20 +102,25 @@ class PatientList {
     }
 
     private boolean addOrdered(Patient pat) {
-        int currentIndex = MAX_PATIENTS;
+        if (logicalSize >= MAX_PATIENTS) {
+            return false;
+        }
+
+        int currentIndex = logicalSize - 1;
         while (currentIndex >= 0 && patients[currentIndex].getIdentity().isLessThan(pat.getIdentity())) {
             //move patient at current_index to current_index +1
             // at this point, element currentIndex is empty
+            patients[currentIndex + 1] = patients[currentIndex];
             currentIndex--;
-            add(patients[currentIndex]);
         }
 // we are now at a patient who does not come after us. add patient to slot currentIndex+1
-        add(pat);
-        return false;
+        patients[currentIndex + 1] = pat;
+        logicalSize++;
+        return true;
     }
 
     public Patient binarySearch(PatientIdentity id) {
-        int upper = MAX_PATIENTS;
+        int upper = logicalSize;
         int lower = 0;
         int mid = (upper + lower) / 2;
         while (upper >= lower) {
@@ -125,12 +136,60 @@ class PatientList {
         return null;
     }
 
+    public class binarySearchTree<T> {
+        T obj = null;
+        PatientIdentity id;
+        int stackPointer;
+        TreeNode left, right;
+        TreeNode root;
+        Patient pat;
+        final int MAX_PATIENTS = 1000;
+        Stack<TreeNode> treeNodeStack = new Stack<TreeNode>(50);
+        Stack<TreeNode> iterationStack = new Stack<TreeNode>(100);
+        Stack<Patient> patientStack = new Stack<Patient>(MAX_PATIENTS);
+        Object[] theStack = null;
+
+        public binarySearchTree(int value) {
+            root = new TreeNode(value);
+        }
+
+        TreeNode insert(T value) {
+            TreeNode node = new TreeNode(value);
+            TreeNode nextNode = iterationStack.Pop();
+            while (node > node.Next()) {
+                if (nextNode.right != null && find(id).equals(pat)) {
+                    add(pat);
+                }
+            }
+            return nextNode;
+        }
+
+        private void findLeftmost( TreeNode startingNode, Stack<TreeNode> stack ) {
+            TreeNode node = startingNode;
+            TreeNode leftNode = stack.left;
+            while (node != null) {
+//            push this node on the stack
+                stack.Push(node);
+//            proceed to left child node
+                node = leftNode;
+            }
+        }
+
+        private TreeNode Next() {
+            TreeNode returnNode = iterationStack.Pop();
+            if (returnNode.right != null) {
+                findLeftmost(returnNode.right, iterationStack);
+            }
+            return returnNode;
+        }
+    }
+
     Patient linearSearch(PatientIdentity id) {
         Patient pat = null;
         Iterator iter = this.new Iterator();
         while ((pat = iter.next()) != null) {
 //            if this patient matches the identity, this is the one you want
-            if (this.patient.equals(id)) {
+            if (pat.getIdentity().match(id)) {
                 return pat;
             }
         }
@@ -142,8 +201,10 @@ class PatientList {
         try {
             writer = new FileWriter(filename);
             Iterator iter = this.new Iterator();
-            while (iter.next() != null) {
-                writer.write(iter.next().toCSV() + "\n");
+            Patient p = iter.next();
+            while (p != null) {
+                writer.write(p.toCSV() + "\n");
+                p = iter.next();
             }
             writer.close();
             return true;

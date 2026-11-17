@@ -9,6 +9,7 @@ class PatientTree {
     }
 
     private TreeNode root;
+
     public PatientTree() {
         root = null;
     }
